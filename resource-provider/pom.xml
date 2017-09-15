@@ -1,0 +1,140 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.jiuzhi.common</groupId>
+		<artifactId>resource-system</artifactId>
+		<version>3.5.0</version>
+	</parent>
+	<artifactId>resource-provider</artifactId>
+	<name>resource-provider</name>
+	<url>http://mvnrepo.appleframework.com</url>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- apple -->
+		<dependency>
+			<groupId>com.appleframework</groupId>
+			<artifactId>apple-distributed</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.appleframework.boot</groupId>
+			<artifactId>apple-boot-spring</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.appleframework.security</groupId>
+			<artifactId>apple-security-core</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.appleframework.cache</groupId>
+			<artifactId>apple-cache-redisson</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.redisson</groupId>
+					<artifactId>redisson</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>1.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.appleframework.jms</groupId>
+			<artifactId>apple-jms-kafka</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.appleframework.qos</groupId>
+			<artifactId>apple-qos-collector-spring</artifactId>
+		</dependency>
+				
+		<dependency>
+      		<groupId>net.sf.ehcache</groupId>
+      		<artifactId>ehcache</artifactId>
+      		<version>2.10.1</version>
+      	</dependency>
+      	
+      	<dependency>
+			<groupId>org.redisson</groupId>
+			<artifactId>redisson</artifactId>
+			<version>2.2.24.APPLE</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo</artifactId>
+    		<version>2.5.4.APPLE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.jiuzhi.common</groupId>
+			<artifactId>resource-common</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.jiuzhi.common</groupId>
+			<artifactId>common-tools-upload</artifactId>
+			<version>4.1.0</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptor>src/main/assembly/assembly.xml</descriptor>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

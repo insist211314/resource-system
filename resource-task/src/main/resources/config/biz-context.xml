@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+       	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+  	">
+
+	<bean id="propertyConfigurer"
+		class="com.appleframework.config.ExtendedPropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:system.properties</value>
+			</list>
+		</property>
+		<property name="loadRemote" value="true" />
+	</bean>
+
+
+	<!-- 开启注解配置 -->
+	<context:annotation-config />
+
+	<aop:aspectj-autoproxy />
+	
+	<!--① 扫描Spring Bean -->
+	<!-- 对指定的包进行组件扫描 -->
+	<!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
+	<context:component-scan base-package="com.jiuzhi.common.resource" />
+
+	<bean class="com.appleframework.core.utils.SpringUtility" lazy-init="false" />
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>\i18n\service\biz-social</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- <bean class="com.appleframework.exception.utils.MessageSourceUtility" lazy-init="false" /> -->
+
+	<import resource="classpath*:META-INF/apple/apple-qos-spring.xml" />
+	<import resource="classpath*:META-INF/apple/apple-qos-jmx.xml" />
+
+	<!-- 缺省的异步任务线程池 -->
+	<task:annotation-driven executor="crawlingExecutor" />
+	<task:executor id="crawlingExecutor" pool-size="${executor.queue.capacity:100-300}" queue-capacity="${executor.queue.capacity:1000}" />
+
+	<task:executor id="videoExecutor" pool-size="${executor.queue.capacity:1-2}" queue-capacity="${executor.queue.capacity:1000}" />
+
+	<!--<bean id="asyncSpringAOPSupport" class="com.appleframework.async.inject.AsyncSpringAOPSupport" >-->
+		<!--<property name="corePoolSize" value="${async.corePoolSize:100}"/>-->
+		<!--<property name="maxPoolSize" value="${async.maxPoolSize:300}"/>-->
+		<!--<property name="maxAcceptCount" value="${async.maxAcceptCount:20000}"/>-->
+		<!--<property name="rejectedExecutionHandler" value="${async.rejectedExecutionHandler:1000}"/>-->
+		<!--<property name="allowCoreThreadTimeout" value="true"/>-->
+		<!--<property name="traced" value="true"/>-->
+		<!--<property name="keepAliveTime" value="${async.keepAliveTime:10001}"/>-->
+	<!--</bean>-->
+
+</beans>

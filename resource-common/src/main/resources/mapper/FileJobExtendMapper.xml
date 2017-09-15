@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiuzhi.common.resource.dao.extend.FileJobExtendDao" >
+
+
+  <update id="updateByTaskWaitCount">
+    update t_file_job
+    set
+      task_wait_count =
+      (select count(p.id) from t_file_down_process p where id in
+        <foreach item="processId" collection="processIds" open="(" separator="," close=")">
+          #{processId}
+        </foreach>
+      and p.status&lt;&gt;3 and p.status&lt;&gt;4
+      ) where id = #{id}
+  </update>
+
+  <update id="updateByCompletedDownload">
+    update t_file_job j, t_job_process_relationship pr
+    set
+      j.task_wait_count=task_wait_count-1,
+      j.update_time=now()
+    <if test="isFail" >
+      ,  j.fail_process_ids=IF(j.fail_process_ids is null or j.fail_process_ids = '', '${processId}', concat(j.fail_process_ids, ',${processId}'))
+    </if>
+    where j.id=pr.job_id and pr.process_id=#{processId} and task_wait_count&gt;0
+  </update>
+</mapper>

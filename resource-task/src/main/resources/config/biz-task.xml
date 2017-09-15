@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+    	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+ 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.jiuzhi.common.resource" />
+
+    <bean id="regCenter" class="com.dangdang.ddframe.reg.zookeeper.ZookeeperRegistryCenter" init-method="init">
+        <constructor-arg>
+            <bean class="com.dangdang.ddframe.reg.zookeeper.ZookeeperConfiguration">
+                <property name="serverLists" value="${job.server.lists}" />
+                <property name="namespace" value="${job.namespace:resource_job}" />
+                <property name="baseSleepTimeMilliseconds" value="${job.baseSleepTimeMilliseconds:1000}" />
+                <property name="maxSleepTimeMilliseconds" value="${job.maxSleepTimeMilliseconds:3000}" />
+                <property name="maxRetries" value="${job.maxRetries:3}" />
+            </bean>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="httpCotentImgeJob" class="com.dangdang.ddframe.job.spring.schedule.SpringJobScheduler" init-method="init">
+        <constructor-arg ref="regCenter" />
+        <constructor-arg>
+            <bean class="com.dangdang.ddframe.job.api.JobConfiguration">
+                <constructor-arg name="jobName" value="httpImgeReferJob" />
+                <constructor-arg name="jobClass" value="com.jiuzhi.common.resource.task.ImgReferCacheTask" />
+                <constructor-arg name="shardingTotalCount" value="${httpImgeRefer.job.shardingTotalCount:1}" />
+                <constructor-arg name="cron" value="0/5 * * * * ?" />
+                <property name="shardingItemParameters" value="${httpImgeRefer.job.shardingItemParameters:0=1,1=2,2=3,3=4,4=5,5=6,6=7,7=8,8=9,9=10}" />
+                <property name="monitorExecution" value="${httpImgeRefer.job.monitorExecution:false}" />
+                <property name="monitorPort" value="${httpImgeRefer.job.monitorPort:9889}" />
+                <property name="failover" value="${httpImgeRefer.job.failover:true}" />
+                <property name="description" value="${httpImgeRefer.job.description:httpImgeJob}" />
+                <property name="disabled" value="${httpImgeRefer.job.disabled:false}" />
+                <property name="overwrite" value="${httpImgeRefer.job.overwrite:true}" />
+            </bean>
+        </constructor-arg>
+    </bean>
+
+
+    <bean id="springCrawlingJob" class="com.dangdang.ddframe.job.spring.schedule.SpringJobScheduler" init-method="init">
+        <constructor-arg ref="regCenter" />
+        <constructor-arg>
+            <bean class="com.dangdang.ddframe.job.api.JobConfiguration">
+                <constructor-arg name="jobName" value="crawlingJob" />
+                <constructor-arg name="jobClass" value="com.jiuzhi.common.resource.task.ResourceDownTask" />
+                <constructor-arg name="shardingTotalCount" value="${crawling.job.shardingTotalCount:1}" />
+                <constructor-arg name="cron" value="0 0/10 * * * ?" />
+                <property name="shardingItemParameters" value="${crawling.job.shardingItemParameters:0=1,1=2,2=3,3=4,4=5,5=6,6=7,7=8,8=9,9=10}" />
+                <property name="monitorExecution" value="${crawling.job.monitorExecution:false}" />
+                <property name="monitorPort" value="${crawling.job.monitorPort:9888}" />
+                <property name="failover" value="${crawling.job.failover:true}" />
+                <property name="description" value="${crawling.job.description:crawlingJob}" />
+                <property name="disabled" value="${crawling.job.disabled:false}" />
+                <property name="overwrite" value="${crawling.job.overwrite:true}" />
+            </bean>
+        </constructor-arg>
+
+
+    </bean>
+
+
+
+
+</beans>

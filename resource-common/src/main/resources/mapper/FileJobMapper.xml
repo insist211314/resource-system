@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiuzhi.common.resource.dao.FileJobDao" >
+  <resultMap id="BaseResultMap" type="com.jiuzhi.common.resource.entity.FileJob" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="business_type" property="businessType" jdbcType="VARCHAR" />
+    <result column="business_id" property="businessId" jdbcType="VARCHAR" />
+    <result column="business_app" property="businessApp" jdbcType="VARCHAR" />
+    <result column="task_count" property="taskCount" jdbcType="INTEGER" />
+    <result column="task_wait_count" property="taskWaitCount" jdbcType="INTEGER" />
+    <result column="notify_retry_count" property="notifyRetryCount" jdbcType="INTEGER" />
+    <result column="notify_status" property="notifyStatus" jdbcType="SMALLINT" />
+    <result column="is_delete" property="isDelete" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="fail_process_ids" property="failProcessIds" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.jiuzhi.common.resource.entity.FileJob" extends="BaseResultMap" >
+    <result column="notify_exception" property="notifyException" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, business_type, business_id, business_app, task_count, task_wait_count, notify_retry_count, 
+    notify_status, is_delete, create_time, update_time, fail_process_ids
+  </sql>
+  <sql id="Blob_Column_List" >
+    notify_exception
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.jiuzhi.common.resource.entity.FileJobExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_file_job
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jiuzhi.common.resource.entity.FileJobExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_file_job
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_file_job
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_file_job
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jiuzhi.common.resource.entity.FileJobExample" >
+    delete from t_file_job
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jiuzhi.common.resource.entity.FileJob" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_file_job (business_type, business_id, business_app, 
+      task_count, task_wait_count, notify_retry_count, 
+      notify_status, is_delete, create_time, 
+      update_time, fail_process_ids, notify_exception
+      )
+    values (#{businessType,jdbcType=VARCHAR}, #{businessId,jdbcType=VARCHAR}, #{businessApp,jdbcType=VARCHAR}, 
+      #{taskCount,jdbcType=INTEGER}, #{taskWaitCount,jdbcType=INTEGER}, #{notifyRetryCount,jdbcType=INTEGER}, 
+      #{notifyStatus,jdbcType=SMALLINT}, #{isDelete,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{failProcessIds,jdbcType=VARCHAR}, #{notifyException,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jiuzhi.common.resource.entity.FileJob" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_file_job
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="businessType != null" >
+        business_type,
+      </if>
+      <if test="businessId != null" >
+        business_id,
+      </if>
+      <if test="businessApp != null" >
+        business_app,
+      </if>
+      <if test="taskCount != null" >
+        task_count,
+      </if>
+      <if test="taskWaitCount != null" >
+        task_wait_count,
+      </if>
+      <if test="notifyRetryCount != null" >
+        notify_retry_count,
+      </if>
+      <if test="notifyStatus != null" >
+        notify_status,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="failProcessIds != null" >
+        fail_process_ids,
+      </if>
+      <if test="notifyException != null" >
+        notify_exception,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="businessType != null" >
+        #{businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="businessId != null" >
+        #{businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="businessApp != null" >
+        #{businessApp,jdbcType=VARCHAR},
+      </if>
+      <if test="taskCount != null" >
+        #{taskCount,jdbcType=INTEGER},
+      </if>
+      <if test="taskWaitCount != null" >
+        #{taskWaitCount,jdbcType=INTEGER},
+      </if>
+      <if test="notifyRetryCount != null" >
+        #{notifyRetryCount,jdbcType=INTEGER},
+      </if>
+      <if test="notifyStatus != null" >
+        #{notifyStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="failProcessIds != null" >
+        #{failProcessIds,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyException != null" >
+        #{notifyException,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jiuzhi.common.resource.entity.FileJobExample" resultType="java.lang.Integer" >
+    select count(*) from t_file_job
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_file_job
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.businessType != null" >
+        business_type = #{record.businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessId != null" >
+        business_id = #{record.businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessApp != null" >
+        business_app = #{record.businessApp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskCount != null" >
+        task_count = #{record.taskCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskWaitCount != null" >
+        task_wait_count = #{record.taskWaitCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.notifyRetryCount != null" >
+        notify_retry_count = #{record.notifyRetryCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.notifyStatus != null" >
+        notify_status = #{record.notifyStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="record.isDelete != null" >
+        is_delete = #{record.isDelete,jdbcType=BIT},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.failProcessIds != null" >
+        fail_process_ids = #{record.failProcessIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.notifyException != null" >
+        notify_exception = #{record.notifyException,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update t_file_job
+    set id = #{record.id,jdbcType=BIGINT},
+      business_type = #{record.businessType,jdbcType=VARCHAR},
+      business_id = #{record.businessId,jdbcType=VARCHAR},
+      business_app = #{record.businessApp,jdbcType=VARCHAR},
+      task_count = #{record.taskCount,jdbcType=INTEGER},
+      task_wait_count = #{record.taskWaitCount,jdbcType=INTEGER},
+      notify_retry_count = #{record.notifyRetryCount,jdbcType=INTEGER},
+      notify_status = #{record.notifyStatus,jdbcType=SMALLINT},
+      is_delete = #{record.isDelete,jdbcType=BIT},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      fail_process_ids = #{record.failProcessIds,jdbcType=VARCHAR},
+      notify_exception = #{record.notifyException,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_file_job
+    set id = #{record.id,jdbcType=BIGINT},
+      business_type = #{record.businessType,jdbcType=VARCHAR},
+      business_id = #{record.businessId,jdbcType=VARCHAR},
+      business_app = #{record.businessApp,jdbcType=VARCHAR},
+      task_count = #{record.taskCount,jdbcType=INTEGER},
+      task_wait_count = #{record.taskWaitCount,jdbcType=INTEGER},
+      notify_retry_count = #{record.notifyRetryCount,jdbcType=INTEGER},
+      notify_status = #{record.notifyStatus,jdbcType=SMALLINT},
+      is_delete = #{record.isDelete,jdbcType=BIT},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      fail_process_ids = #{record.failProcessIds,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jiuzhi.common.resource.entity.FileJob" >
+    update t_file_job
+    <set >
+      <if test="businessType != null" >
+        business_type = #{businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="businessId != null" >
+        business_id = #{businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="businessApp != null" >
+        business_app = #{businessApp,jdbcType=VARCHAR},
+      </if>
+      <if test="taskCount != null" >
+        task_count = #{taskCount,jdbcType=INTEGER},
+      </if>
+      <if test="taskWaitCount != null" >
+        task_wait_count = #{taskWaitCount,jdbcType=INTEGER},
+      </if>
+      <if test="notifyRetryCount != null" >
+        notify_retry_count = #{notifyRetryCount,jdbcType=INTEGER},
+      </if>
+      <if test="notifyStatus != null" >
+        notify_status = #{notifyStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="failProcessIds != null" >
+        fail_process_ids = #{failProcessIds,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyException != null" >
+        notify_exception = #{notifyException,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.jiuzhi.common.resource.entity.FileJob" >
+    update t_file_job
+    set business_type = #{businessType,jdbcType=VARCHAR},
+      business_id = #{businessId,jdbcType=VARCHAR},
+      business_app = #{businessApp,jdbcType=VARCHAR},
+      task_count = #{taskCount,jdbcType=INTEGER},
+      task_wait_count = #{taskWaitCount,jdbcType=INTEGER},
+      notify_retry_count = #{notifyRetryCount,jdbcType=INTEGER},
+      notify_status = #{notifyStatus,jdbcType=SMALLINT},
+      is_delete = #{isDelete,jdbcType=BIT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      fail_process_ids = #{failProcessIds,jdbcType=VARCHAR},
+      notify_exception = #{notifyException,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jiuzhi.common.resource.entity.FileJob" >
+    update t_file_job
+    set business_type = #{businessType,jdbcType=VARCHAR},
+      business_id = #{businessId,jdbcType=VARCHAR},
+      business_app = #{businessApp,jdbcType=VARCHAR},
+      task_count = #{taskCount,jdbcType=INTEGER},
+      task_wait_count = #{taskWaitCount,jdbcType=INTEGER},
+      notify_retry_count = #{notifyRetryCount,jdbcType=INTEGER},
+      notify_status = #{notifyStatus,jdbcType=SMALLINT},
+      is_delete = #{isDelete,jdbcType=BIT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      fail_process_ids = #{failProcessIds,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

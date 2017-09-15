@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiuzhi.common.resource.dao.FileDownProcessDao" >
+  <resultMap id="BaseResultMap" type="com.jiuzhi.common.resource.entity.FileDownProcess" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="down_url_md5" property="downUrlMd5" jdbcType="VARCHAR" />
+    <result column="down_url" property="downUrl" jdbcType="VARCHAR" />
+    <result column="file_md5" property="fileMd5" jdbcType="VARCHAR" />
+    <result column="access_url_md5" property="accessUrlMd5" jdbcType="VARCHAR" />
+    <result column="access_url" property="accessUrl" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="extension" property="extension" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="SMALLINT" />
+    <result column="file_disk_url" property="fileDiskUrl" jdbcType="VARCHAR" />
+    <result column="last_down_time" property="lastDownTime" jdbcType="TIMESTAMP" />
+    <result column="retry_count" property="retryCount" jdbcType="INTEGER" />
+    <result column="params" property="params" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="is_proxy" property="isProxy" jdbcType="BIT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.jiuzhi.common.resource.entity.FileDownProcess" extends="BaseResultMap" >
+    <result column="exc_info" property="excInfo" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, down_url_md5, down_url, file_md5, access_url_md5, access_url, type, extension, 
+    status, file_disk_url, last_down_time, retry_count, params, create_time, update_time, 
+    is_proxy
+  </sql>
+  <sql id="Blob_Column_List" >
+    exc_info
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.jiuzhi.common.resource.entity.FileDownProcessExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_file_down_process
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jiuzhi.common.resource.entity.FileDownProcessExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_file_down_process
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_file_down_process
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_file_down_process
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jiuzhi.common.resource.entity.FileDownProcessExample" >
+    delete from t_file_down_process
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jiuzhi.common.resource.entity.FileDownProcess" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_file_down_process (down_url_md5, down_url, file_md5, 
+      access_url_md5, access_url, type, 
+      extension, status, file_disk_url, 
+      last_down_time, retry_count, params, 
+      create_time, update_time, is_proxy, 
+      exc_info)
+    values (#{downUrlMd5,jdbcType=VARCHAR}, #{downUrl,jdbcType=VARCHAR}, #{fileMd5,jdbcType=VARCHAR}, 
+      #{accessUrlMd5,jdbcType=VARCHAR}, #{accessUrl,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{extension,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT}, #{fileDiskUrl,jdbcType=VARCHAR}, 
+      #{lastDownTime,jdbcType=TIMESTAMP}, #{retryCount,jdbcType=INTEGER}, #{params,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{isProxy,jdbcType=BIT}, 
+      #{excInfo,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jiuzhi.common.resource.entity.FileDownProcess" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_file_down_process
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="downUrlMd5 != null" >
+        down_url_md5,
+      </if>
+      <if test="downUrl != null" >
+        down_url,
+      </if>
+      <if test="fileMd5 != null" >
+        file_md5,
+      </if>
+      <if test="accessUrlMd5 != null" >
+        access_url_md5,
+      </if>
+      <if test="accessUrl != null" >
+        access_url,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="extension != null" >
+        extension,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="fileDiskUrl != null" >
+        file_disk_url,
+      </if>
+      <if test="lastDownTime != null" >
+        last_down_time,
+      </if>
+      <if test="retryCount != null" >
+        retry_count,
+      </if>
+      <if test="params != null" >
+        params,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isProxy != null" >
+        is_proxy,
+      </if>
+      <if test="excInfo != null" >
+        exc_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="downUrlMd5 != null" >
+        #{downUrlMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="downUrl != null" >
+        #{downUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fileMd5 != null" >
+        #{fileMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="accessUrlMd5 != null" >
+        #{accessUrlMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="accessUrl != null" >
+        #{accessUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="extension != null" >
+        #{extension,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="fileDiskUrl != null" >
+        #{fileDiskUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="lastDownTime != null" >
+        #{lastDownTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="retryCount != null" >
+        #{retryCount,jdbcType=INTEGER},
+      </if>
+      <if test="params != null" >
+        #{params,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isProxy != null" >
+        #{isProxy,jdbcType=BIT},
+      </if>
+      <if test="excInfo != null" >
+        #{excInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jiuzhi.common.resource.entity.FileDownProcessExample" resultType="java.lang.Integer" >
+    select count(*) from t_file_down_process
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_file_down_process
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.downUrlMd5 != null" >
+        down_url_md5 = #{record.downUrlMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.downUrl != null" >
+        down_url = #{record.downUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileMd5 != null" >
+        file_md5 = #{record.fileMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accessUrlMd5 != null" >
+        access_url_md5 = #{record.accessUrlMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accessUrl != null" >
+        access_url = #{record.accessUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.extension != null" >
+        extension = #{record.extension,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=SMALLINT},
+      </if>
+      <if test="record.fileDiskUrl != null" >
+        file_disk_url = #{record.fileDiskUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastDownTime != null" >
+        last_down_time = #{record.lastDownTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.retryCount != null" >
+        retry_count = #{record.retryCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.params != null" >
+        params = #{record.params,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isProxy != null" >
+        is_proxy = #{record.isProxy,jdbcType=BIT},
+      </if>
+      <if test="record.excInfo != null" >
+        exc_info = #{record.excInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update t_file_down_process
+    set id = #{record.id,jdbcType=BIGINT},
+      down_url_md5 = #{record.downUrlMd5,jdbcType=VARCHAR},
+      down_url = #{record.downUrl,jdbcType=VARCHAR},
+      file_md5 = #{record.fileMd5,jdbcType=VARCHAR},
+      access_url_md5 = #{record.accessUrlMd5,jdbcType=VARCHAR},
+      access_url = #{record.accessUrl,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      extension = #{record.extension,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=SMALLINT},
+      file_disk_url = #{record.fileDiskUrl,jdbcType=VARCHAR},
+      last_down_time = #{record.lastDownTime,jdbcType=TIMESTAMP},
+      retry_count = #{record.retryCount,jdbcType=INTEGER},
+      params = #{record.params,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      is_proxy = #{record.isProxy,jdbcType=BIT},
+      exc_info = #{record.excInfo,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_file_down_process
+    set id = #{record.id,jdbcType=BIGINT},
+      down_url_md5 = #{record.downUrlMd5,jdbcType=VARCHAR},
+      down_url = #{record.downUrl,jdbcType=VARCHAR},
+      file_md5 = #{record.fileMd5,jdbcType=VARCHAR},
+      access_url_md5 = #{record.accessUrlMd5,jdbcType=VARCHAR},
+      access_url = #{record.accessUrl,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      extension = #{record.extension,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=SMALLINT},
+      file_disk_url = #{record.fileDiskUrl,jdbcType=VARCHAR},
+      last_down_time = #{record.lastDownTime,jdbcType=TIMESTAMP},
+      retry_count = #{record.retryCount,jdbcType=INTEGER},
+      params = #{record.params,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      is_proxy = #{record.isProxy,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jiuzhi.common.resource.entity.FileDownProcess" >
+    update t_file_down_process
+    <set >
+      <if test="downUrlMd5 != null" >
+        down_url_md5 = #{downUrlMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="downUrl != null" >
+        down_url = #{downUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fileMd5 != null" >
+        file_md5 = #{fileMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="accessUrlMd5 != null" >
+        access_url_md5 = #{accessUrlMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="accessUrl != null" >
+        access_url = #{accessUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="extension != null" >
+        extension = #{extension,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="fileDiskUrl != null" >
+        file_disk_url = #{fileDiskUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="lastDownTime != null" >
+        last_down_time = #{lastDownTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="retryCount != null" >
+        retry_count = #{retryCount,jdbcType=INTEGER},
+      </if>
+      <if test="params != null" >
+        params = #{params,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isProxy != null" >
+        is_proxy = #{isProxy,jdbcType=BIT},
+      </if>
+      <if test="excInfo != null" >
+        exc_info = #{excInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.jiuzhi.common.resource.entity.FileDownProcess" >
+    update t_file_down_process
+    set down_url_md5 = #{downUrlMd5,jdbcType=VARCHAR},
+      down_url = #{downUrl,jdbcType=VARCHAR},
+      file_md5 = #{fileMd5,jdbcType=VARCHAR},
+      access_url_md5 = #{accessUrlMd5,jdbcType=VARCHAR},
+      access_url = #{accessUrl,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      extension = #{extension,jdbcType=VARCHAR},
+      status = #{status,jdbcType=SMALLINT},
+      file_disk_url = #{fileDiskUrl,jdbcType=VARCHAR},
+      last_down_time = #{lastDownTime,jdbcType=TIMESTAMP},
+      retry_count = #{retryCount,jdbcType=INTEGER},
+      params = #{params,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_proxy = #{isProxy,jdbcType=BIT},
+      exc_info = #{excInfo,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jiuzhi.common.resource.entity.FileDownProcess" >
+    update t_file_down_process
+    set down_url_md5 = #{downUrlMd5,jdbcType=VARCHAR},
+      down_url = #{downUrl,jdbcType=VARCHAR},
+      file_md5 = #{fileMd5,jdbcType=VARCHAR},
+      access_url_md5 = #{accessUrlMd5,jdbcType=VARCHAR},
+      access_url = #{accessUrl,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      extension = #{extension,jdbcType=VARCHAR},
+      status = #{status,jdbcType=SMALLINT},
+      file_disk_url = #{fileDiskUrl,jdbcType=VARCHAR},
+      last_down_time = #{lastDownTime,jdbcType=TIMESTAMP},
+      retry_count = #{retryCount,jdbcType=INTEGER},
+      params = #{params,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_proxy = #{isProxy,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

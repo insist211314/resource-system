@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<dubbo:application name="${application.name}" owner="${application.owner}" />
+	
+	<dubbo:protocol name="dubbo" port="${service.port}" />
+
+	<dubbo:registry protocol="zookeeper" address="${registry.address}" 
+		file="${registry.file:/work/data/dubbo/resource-provider/dubbo-registry.cache}" register="${dubbo.register:true}"/>
+	
+	<dubbo:provider 
+		timeout="${provider.timeout:8000}" 
+		threads="${provider.threads:1000}" 
+		accepts="${provider.accepts:500}" />
+
+	<dubbo:service ref="resourceDownloadService" interface="com.jiuzhi.common.resource.service.ResourceDownloadService" version="1.0" />
+	<dubbo:service ref="resourceSearchService" interface="com.jiuzhi.common.resource.service.ResourceSearchService" version="1.0" />
+
+
+</beans> 
